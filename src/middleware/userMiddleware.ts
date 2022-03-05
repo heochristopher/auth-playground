@@ -35,7 +35,19 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     try {
+        const { email, password } = req.body;
+        const existingUser = await User.findOne({ email })
+        if (!existingUser) {
+            console.log('email not registered')
+        }
+        const validPassword = await bcrypt.compareSync(password, existingUser.password)
         
+        if (!validPassword) {
+            console.log('not valid')
+            return
+        }
+        console.log('valid')
+
     } catch (error) {
         console.log(error)
     }

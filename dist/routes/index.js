@@ -10,3 +10,4 @@ const router = express_1.default.Router();
 exports.router = router;
 router.get('/', userMiddleware_1.getUsers);
 router.post('/register', userMiddleware_1.createUser);
+router.post('/login', userMiddleware_1.login);

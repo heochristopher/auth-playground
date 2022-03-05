@@ -48,6 +48,17 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.createUser = createUser;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { email, password } = req.body;
+        const existingUser = yield User_1.User.findOne({ email });
+        if (!existingUser) {
+            console.log('email not registered');
+        }
+        const validPassword = yield bcryptjs_1.default.compareSync(password, existingUser.password);
+        if (!validPassword) {
+            console.log('not valid');
+            return;
+        }
+        console.log('valid');
     }
     catch (error) {
         console.log(error);
