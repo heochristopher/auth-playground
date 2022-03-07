@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.createUser = exports.getUsers = void 0;
+exports.deleteUser = exports.updateUsers = exports.login = exports.createUser = exports.getUsers = void 0;
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,3 +65,39 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const updateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield User_1.User.findById(req.params.id);
+        const updates = Object.keys(req.body);
+        updates.forEach((e) => (user[e] = req.body[e]));
+        yield user.save();
+        res.json(updates);
+    }
+    catch (error) {
+        res.json(error);
+    }
+});
+exports.updateUsers = updateUsers;
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield User_1.User.findByIdAndDelete(req.params.id);
+        if (!user) {
+            res.status(404).send();
+        }
+        res.json(`${user.firstName} ${user.lastName} was deleted from DB`);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.deleteUser = deleteUser;
+// export const getProfile = async (req: Request, res: Response) => {
+//     try {
+//        const user = await User.findOne({ email: req.oidc.user.email}).exec();
+//         // const user = await User.findById(id)
+//         // res.send(req.oidc.idToken)
+//         res.send(user)
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
