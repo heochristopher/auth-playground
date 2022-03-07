@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'
 import { Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
 import { router } from './routes/index'
@@ -11,6 +12,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.use(cors())
 
 //raw requests are now usable properties on req.body
 app.use(express.json())

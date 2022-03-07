@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.createUser = exports.getUsers = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -55,10 +56,18 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const validPassword = yield bcryptjs_1.default.compareSync(password, existingUser.password);
         if (!validPassword) {
-            console.log('not valid');
+            res.json('not valid');
             return;
         }
         console.log('valid');
+        const payload = {
+            id: existingUser === null || existingUser === void 0 ? void 0 : existingUser._id,
+            firstName: existingUser === null || existingUser === void 0 ? void 0 : existingUser.firstName,
+            email: existingUser === null || existingUser === void 0 ? void 0 : existingUser.email,
+            role: existingUser === null || existingUser === void 0 ? void 0 : existingUser.role
+        };
+        const userToken = jsonwebtoken_1.default.sign(payload, process.env.PRIVATEKEY);
+        res.json(userToken);
     }
     catch (error) {
         console.log(error);

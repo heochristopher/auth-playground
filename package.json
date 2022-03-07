@@ -1,7 +1,6 @@
 {
   "name": "auth-playground",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/app.js",
   "scripts": {
     "dev": "nodemon dist/app.js",
@@ -38,5 +37,6 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.4"
-  }
+  },
+  "description": ""
 }

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/User'
 import bcrypt from 'bcryptjs'
+import { expression } from 'joi'
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
@@ -41,13 +42,19 @@ export const login = async (req: Request, res: Response) => {
             console.log('email not registered')
         }
         const validPassword = await bcrypt.compareSync(password, existingUser.password)
-        
         if (!validPassword) {
-            console.log('not valid')
+            res.json('not valid')
             return
         }
         console.log('valid')
-
+        const payload = {
+            id: existingUser?._id,
+            firstName: existingUser?.firstName,
+            email: existingUser?.email,
+            role: existingUser?.role
+        }
+        const userToken = jwt.sign(payload, process.env.PRIVATEKEY as string)
+        res.json(userToken)
     } catch (error) {
         console.log(error)
     }
