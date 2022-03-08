@@ -2,7 +2,14 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/User'
 import bcrypt from 'bcryptjs'
-import { expression } from 'joi'
+// import Joi from 'joi'
+
+// const joiSchema= {
+//     firstName: Joi.string().required(),
+//     lastName: Joi.string().required(),
+//     email: Joi.string().required().email(),
+//     password: Joi.string().min(6).required()
+// }
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
@@ -15,6 +22,10 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
+
+        // //validate user
+        // const validUser = joiSchema.validate(req.body)
+
     //find an existing user
      let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send("User already registered.");
@@ -54,9 +65,19 @@ export const login = async (req: Request, res: Response) => {
             role: existingUser?.role
         }
         const userToken = jwt.sign(payload, process.env.PRIVATEKEY as string)
-        res.json(userToken)
+        res.header('auth-token', userToken).send(userToken)
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const post = async(req: Request, res: Response) => {
+    try {
+        res.json(
+           req.body
+        )
+    } catch (error) {
+        res.json(error)
     }
 }
 

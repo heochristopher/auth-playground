@@ -12,10 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUsers = exports.login = exports.createUser = exports.getUsers = void 0;
+exports.deleteUser = exports.updateUsers = exports.post = exports.login = exports.createUser = exports.getUsers = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+// import Joi from 'joi'
+// const joiSchema= {
+//     firstName: Joi.string().required(),
+//     lastName: Joi.string().required(),
+//     email: Joi.string().required().email(),
+//     password: Joi.string().min(6).required()
+// }
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const Users = yield User_1.User.find();
@@ -28,6 +35,8 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUsers = getUsers;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        // //validate user
+        // const validUser = joiSchema.validate(req.body)
         //find an existing user
         let user = yield User_1.User.findOne({ email: req.body.email });
         if (user)
@@ -67,13 +76,22 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             role: existingUser === null || existingUser === void 0 ? void 0 : existingUser.role
         };
         const userToken = jsonwebtoken_1.default.sign(payload, process.env.PRIVATEKEY);
-        res.json(userToken);
+        res.header('auth-token', userToken).send(userToken);
     }
     catch (error) {
         console.log(error);
     }
 });
 exports.login = login;
+const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        res.json(req.body);
+    }
+    catch (error) {
+        res.json(error);
+    }
+});
+exports.post = post;
 const updateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield User_1.User.findById(req.params.id);
