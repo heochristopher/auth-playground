@@ -12,17 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyToken = void 0;
+exports.requiresAuth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const requiresAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header('auth-token');
     if (!token)
         return res.json('access denied');
     try {
-        return jsonwebtoken_1.default.verify(token, process.env.PRIVATEKEY);
+        console.log(jsonwebtoken_1.default.verify(token, process.env.PRIVATEKEY));
+        res.json(jsonwebtoken_1.default.verify(token, process.env.PRIVATEKEY));
     }
     catch (error) {
         res.json(error);
     }
 });
-exports.verifyToken = verifyToken;
+exports.requiresAuth = requiresAuth;
