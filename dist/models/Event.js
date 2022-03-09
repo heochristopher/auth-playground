@@ -19,22 +19,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userSchema = exports.User = void 0;
+exports.Event = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+const User_1 = require("./User");
 const privateKey = process.env.PRIVATEKEY;
-const userSchema = new mongoose_1.Schema({
-    firstName: { type: String, trim: true, required: true },
-    lastName: { type: String, trim: true, required: true },
-    email: { type: String, required: true },
-    password: { type: String, required: true },
-    // role: {type: Role, default: Role.Viewer, required: true},
-    role: { type: String, default: 'viewer' },
-    subscribers: { type: [], default: [], required: true },
-    interestedEvents: { type: [], default: [], required: true },
-    events: { type: [], default: [], required: true },
-    avatar: { type: String, default: null },
+const eventSchema = new mongoose_1.Schema({
+    user: { type: User_1.userSchema, required: true },
+    date: { type: Date, required: true },
+    hours: { type: Number },
+    location: { type: String, required: true },
+    description: { type: String, required: true },
+    interestedUsers: { type: [], default: [], required: true },
+    comments: { type: [], default: [], required: true },
     slug: String
 });
-exports.userSchema = userSchema;
-const User = mongoose_1.default.model('User', userSchema);
-exports.User = User;
+const Event = mongoose_1.default.model('Event', eventSchema);
+exports.Event = Event;

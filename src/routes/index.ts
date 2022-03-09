@@ -1,5 +1,6 @@
 import express from 'express'
-import {getUsers, createUser, login, updateUsers, deleteUser, post} from '../middleware/userMiddleware'
+import {getUsers, createUser, login, updateUsers, deleteUser} from '../middleware/userMiddleware'
+import { createEvent } from '../middleware/eventMiddleware'
 import {requiresAuth} from '../middleware/token'
 const router = express.Router()
 
@@ -8,7 +9,7 @@ router.post('/register', createUser)
 router.post('/login', login)
 router.patch('/user/:id', updateUsers)
 router.delete('/user/:id', deleteUser)
-router.post('/post', requiresAuth, post)
+router.post('/event', requiresAuth, createEvent)
 // router.get('/profile', getProfile)
 
 export {router}

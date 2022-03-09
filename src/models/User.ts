@@ -8,7 +8,7 @@ const privateKey = process.env.PRIVATEKEY
 //     Admin = 'admin'
 // }
 
-interface UserInterface {
+export interface UserInterface {
     firstName: string,
     lastName: string,
     email: string,
@@ -38,4 +38,4 @@ const userSchema = new Schema({
 
 const User = mongoose.model<UserInterface>('User', userSchema)
 
-export {User}
+export {User, userSchema}

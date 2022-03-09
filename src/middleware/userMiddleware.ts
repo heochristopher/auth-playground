@@ -71,15 +71,6 @@ export const login = async (req: Request, res: Response) => {
     }
 }
 
-export const post = async(req: Request, res: Response) => {
-    try {
-        res.json(
-           req.body
-        )
-    } catch (error) {
-        res.json(error)
-    }
-}
 
 export const updateUsers = async (req: Request, res: Response) => {
     try {
